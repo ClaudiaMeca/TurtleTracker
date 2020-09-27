@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Sep 25 17:01:55 2020
-
-@author: clauv
-"""
 #-------------------------------------------------------------
 # ARGOSTrackingTool.py
 #
@@ -15,6 +9,7 @@ Created on Fri Sep 25 17:01:55 2020
 # Date:   Fall 2020
 #--------------------------------------------------------------
 
+#%% Parsing one line of tracking data
 #Copy and paste a line of data as the lineString variable value
 lineString = "20616	29051	7/3/2003 9:13	3	66	33.898	-77.958	27.369	    -46.309	6	0	-126	529	3	401 651134.7	0"
 
@@ -30,10 +25,44 @@ obs_lon = lineData[7] #Observation Longitude
 
 #Print information to the use
 print (f"Record {record_id} indicates Sara was seen at {obs_lat}N and {obs_lon}W on {obs_date}")
-# {obs_date}
 
-#record_id = lineData[0, 4]  #ARGOS tracking record ID
-#obs_date = obs_dateTime.split()[10, 17] #Observation date
-#ob_lc = lineData[18, 21] #Observation Location Class
-#obs_lat = lineData[23, 24] #ObservationLatitude
-#obs_lon = lineData[25, 30] #Observation Longitude
+#%%Read data directly from ARGOS file
+
+#Create a variable pointing to the data file
+argos_data = './Data/Raw/Sara.txt'
+#Create a file object from the file
+argos_obj = open(argos_data, 'r')
+#Read contents of file into a list
+argos_list = argos_obj.readlines()
+#close file
+argos_obj.close()
+#Pretend we read one line of data from the file
+argos_str = argos_list[18]
+#Split the string into a list of data items
+argos_data = argos_str.split()
+#Extract items in list into variables
+record_id = argos_data[0]  #ARGOS tracking record ID
+obs_date = argos_data[2] #Observation date
+ob_lc = argos_data[4] #Observation Location Class
+obs_lat = argos_data[6] #ObservationLatitude
+obs_lon = argos_data[7] #Observation Longitude
+
+#Print the location of Sara
+print (f"Record {record_id} indicates Sara was seen at {obs_lat}N and {obs_lon}W on {obs_date}")
+
+#%% Tips
+#Reading text files
+
+fileObj = open('Data/Raw/Sara.txt', 'r')
+lineString2 = fileObj.readline(); print (lineString2)
+lineList = fileObj.readlines(); print(lineList[-1])
+fileObj.close()
+
+# Writing to text files
+
+newFile = open('newfile.txt', 'w')
+newFile.write("Hello planet\nIt's me")
+newFile.close()
+
+# Appending to text files
+open('newfile.txt', 'a').write("See what I did here")
